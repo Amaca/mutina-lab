@@ -51,7 +51,7 @@ let dirLight = new DirectionalLight({
 
 let mouseLight = new PointLight({
 	color: 0xffffff,
-	brightness: 1.5,
+	brightness: 0.4,
 	position: {
 		x: viewWidth / 2,
 		y: viewHeight / 2,
@@ -77,8 +77,8 @@ function createClickLight(x, y) {
 }
 
 PIXI.loader
-	.add('alien_diffuse', '../img/image.jpg')
-	.add('alien_normal', '../img/image_bg.jpg')
+	.add('alien_diffuse', './img/image.jpg')
+	.add('alien_normal', './img/image_bg.jpg')
 	//.add('bg_diffuse', '../img/image.jpg')
 	// .add('bg_normal', '../img/image_bg.jpg')
 	.load(function(loader, res) {
