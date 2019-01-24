@@ -77,8 +77,8 @@ function createClickLight(x, y) {
 }
 
 PIXI.loader
-	.add('alien_diffuse', './img/image.jpg')
-	.add('alien_normal', './img/image_bg.jpg')
+	.add('alien_diffuse', 'img/image.jpg')
+	.add('alien_normal', 'img/image_bg.jpg')
 	//.add('bg_diffuse', '../img/image.jpg')
 	// .add('bg_normal', '../img/image_bg.jpg')
 	.load(function(loader, res) {
