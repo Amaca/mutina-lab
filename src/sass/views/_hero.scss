@@ -2,6 +2,10 @@
 @import "../colors";
 
 .hero {
-	background: #fdfdfd;
-	padding: 100px 0;
+	background: #070000;
+
+	canvas {
+		display: block;
+		margin: 0 auto;
+	}
 }

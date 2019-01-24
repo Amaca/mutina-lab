@@ -29,14 +29,14 @@ let renderer = new PIXI.WebGLRenderer(viewWidth, viewHeight, {
 let stage = new PIXI.Container();
 let lightCount = 1;
 
-let lightHeight = 190;
+let lightHeight = 250;
 let allLights = [];
 
 let dirLight = new DirectionalLight({
 	color: 0xffffff,
-	brightness: 0,
-	ambientColor: 0x555555,
-	ambientBrightness: 0.6,
+	brightness: 0.3,
+	ambientColor: 0x888888,
+	ambientBrightness: 1,
 	position: {
 		x: 0,
 		y: 0,
@@ -51,7 +51,7 @@ let dirLight = new DirectionalLight({
 
 let mouseLight = new PointLight({
 	color: 0xffffff,
-	brightness: 1,
+	brightness: 1.5,
 	position: {
 		x: viewWidth / 2,
 		y: viewHeight / 2,
@@ -65,8 +65,8 @@ allLights.push(mouseLight);
 function createClickLight(x, y) {
 	let clickLight = new PointLight({
 		color: 0xffffff,
-		brightness: 5,
-		falloff: [0.3, 6, 60],
+		brightness: 1,
+		falloff: [0.8, 6, 260],
 		position: {
 			x: x,
 			y: y,
