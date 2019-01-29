@@ -1,152 +1,47 @@
 /* jshint esversion: 6 */
+/* global jQuery */
 
-let body,
-	header,
-	html,
-	isSafari,
-	isIE11;
+import Highway from '@dogstudio/highway';
+import ContextualTransition from './highway/contextual-transition';
+import CustomRenderer from './highway/custom-renderer';
+import CustomTransition from './highway/custom-transition';
+import Dom from './shared/dom';
+export default class Main {
 
-/*--------------------------------------------------
-Init
---------------------------------------------------*/
-function init() {
-	html = document.documentElement;
-	body = document.body;
-	header = document.querySelector('.header');
-}
+	constructor() {}
 
-let DirectionalLight = PIXI.lights.DirectionalLight;
-let PointLight = PIXI.lights.PointLight;
+	init() {
+		let header,
+			html;
+		const body = document.querySelector('body');
+		html = document.documentElement;
+		header = document.querySelector('.header');
 
-let canvas = document.getElementById("canvas");
-let viewWidth = 1400;
-let viewHeight = 795;
+		Dom.detect(body);
 
-let renderer = new PIXI.WebGLRenderer(viewWidth, viewHeight, {
-	view: canvas
-});
+		//const lights1 = new Lights({ selector: '#canvas1' });
+		//const lights2 = new Lights({ selector: '#canvas2', diffuse: 'img/image_bg.jpg' });
 
-let stage = new PIXI.Container();
-let lightCount = 1;
-
-let lightHeight = 250;
-let allLights = [];
-
-let dirLight = new DirectionalLight({
-	color: 0xffffff,
-	brightness: 0.3,
-	ambientColor: 0x888888,
-	ambientBrightness: 1,
-	position: {
-		x: 0,
-		y: 0,
-		z: lightHeight,
-	},
-	target: {
-		x: 0,
-		y: 0,
-		z: 0,
-	}
-});
-
-let mouseLight = new PointLight({
-	color: 0xffffff,
-	brightness: 0.4,
-	position: {
-		x: viewWidth / 2,
-		y: viewHeight / 2,
-		z: lightHeight,
-	}
-});
-
-allLights.push(dirLight);
-allLights.push(mouseLight);
-
-function createClickLight(x, y) {
-	let clickLight = new PointLight({
-		color: 0xffffff,
-		brightness: 1,
-		falloff: [0.8, 6, 260],
-		position: {
-			x: x,
-			y: y,
-			z: lightHeight,
-		}
-	});
-	allLights.push(clickLight);
-}
-
-PIXI.loader
-	.add('alien_diffuse', 'img/image.jpg')
-	.add('alien_normal', 'img/image_bg.jpg')
-	//.add('bg_diffuse', '../img/image.jpg')
-	// .add('bg_normal', '../img/image_bg.jpg')
-	.load(function(loader, res) {
-		//let bg = new PIXI.Sprite(res.bg_diffuse.texture);
-		//stage.addChild(bg);
-
-		let alien = new PIXI.Sprite(res.alien_diffuse.texture);
-
-		alien.position.set(0, 0);
-		alien.scale.set(1, 1);
-
-		dirLight.target.x = alien.x;
-		dirLight.target.y = alien.y;
-		dirLight.updateDirection();
-
-		//bg.normalTexture = res.bg_normal.texture;
-		alien.normalTexture = res.alien_normal.texture;
-
-		//bg.pluginName = "lightSprite";
-		alien.pluginName = "lightSprite";
-
-		//bg.lights = allLights;
-		alien.lights = allLights;
-
-		stage.addChild(alien);
-
-		canvas.addEventListener('mousemove', function(e) {
-			let rect = e.target.getBoundingClientRect();
-
-			mouseLight.position.x = e.clientX - rect.left;
-			mouseLight.position.y = e.clientY - rect.top;
+		imagesLoaded(document.querySelector('.wrapper'), function(instance) {
+			body.classList.remove('loading');
 		});
 
-		canvas.addEventListener('click', function(e) {
-			let rect = e.target.getBoundingClientRect();
-
-			createClickLight(e.clientX - rect.left, e.clientY - rect.top);
-
-			document.getElementById('numLights').textContent = ++lightCount;
+		const H = new Highway.Core({
+			renderers: {
+				name: CustomRenderer
+			},
+			transitions: {
+				name: CustomTransition,
+				contextual: {
+					foo: ContextualTransition
+				}
+			}
 		});
-
-		animate();
-	});
-
-function animate() {
-	requestAnimationFrame(animate);
-	renderer.render(stage);
-}
-
-/*--------------------------------------------------
-Browsers
---------------------------------------------------*/
-function oldBrowsers() {
-	isSafari = /constructor/i.test(window.HTMLElement) || (function(p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
-	isIE11 = !!navigator.userAgent.match(/Trident.*rv[ :]*11\./);
-
-	if (isIE11 === true) {
-		html.classList.add('msie');
-	}
-	if (isSafari === true) {
-		html.classList.add('safari');
 	}
 }
 
-/*--------------------------------------------------
-WIN LOAD
---------------------------------------------------*/
+let main = new Main();
+
 window.onload = () => {
-	init();
-	oldBrowsers();
+	main.init();
 };
